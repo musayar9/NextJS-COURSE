@@ -1,7 +1,7 @@
 ### Intercept Routes
 
-Çok güzel bir noktaya değindin 👍
-**Intercepting Routes**, Next.js 13 App Router ile gelen yeni bir özellik.
+
+**Intercepting Routes**
 
 📌 **Tanım**
 Intercepting Routes sayesinde başka bir route’a gitmek istediğinde, **o route’u normalde açılacağı yerde değil, mevcut route’un üzerinde bir modal / overlay gibi gösterebiliyorsun.**
@@ -65,8 +65,6 @@ Burada `@modal` bir **parallel route** slotu. Intercept route sayesinde Next.js,
 
 ---
 
-İstersen sana **basit bir Next.js intercept route kod örneği** gösterebilirim (modal açma senaryosu üzerinden). İstiyor musun?
-Harika 👌 sana Next.js 13 **Intercepting Routes** ile modal açma örneğini göstereyim.
 
 ---
 
@@ -174,12 +172,7 @@ export default function PostModal({ params }: { params: { id: string } }) {
 - Ama Next.js intercepting sayesinde bu isteği yakalayıp `@modal/post/[id]` altında render ediyor → modal açılıyor.
 - Eğer kullanıcı direkt URL’den `/post/1` yazarsa → `app/post/[id]/page.tsx` açılır (tam sayfa).
 
----
 
-İstersen ben bu örneği biraz daha geliştireyim: mesela modal içinden “Next Post / Prev Post” navigation da ekleyebilirim. Bunu ister misin, yoksa şimdilik basit modal örneği yeterli mi?
-
-
-Çok iyi bir soru 👌 Next.js’te **slot** kavramı, App Router ile gelen **Parallel Routes** özelliği sayesinde kullanılıyor.
 
 ---
 
@@ -286,9 +279,6 @@ export default function SettingsPage() {
 * **Slotlar**, Next.js’te paralel UI bölgeleri oluşturmak için kullanılır.
 * En çok **dashboard, messaging app, modal/drawer gibi multi-view** senaryolarda tercih edilir.
 
----
-
-İstersen sana `(.)login` interception örneğini **slot ile birleştirilmiş haliyle** gösterebilirim. Modal’ı bir slot’a yerleştirirsek daha modüler oluyor. İstiyor musun?
 
 
 Buradaki olay aslında tamamen **Next.js konfigürasyon dosyası** (`next.config.ts` ya da `.js`) ile ilgili. Adım adım açıklayayım 👇
@@ -337,11 +327,6 @@ const nextConfig: NextConfig = {
 * `devIndicators` → geliştirici deneyimi için görsel gösterge.
 * `logging` → fetch gibi işlemlerin log formatı.
 
----
-
-İstersen sana **daha gelişmiş bir `next.config.ts` örneği** de gösterebilirim (örneğin `images`, `i18n`, `redirects`, `rewrites` eklenmiş). Göstereyim mi?
-Güzel soru 👌
-Bu kodda gördüğün `revalidate` aslında **Next.js App Router** içinde **ISR (Incremental Static Regeneration)** ile ilgili bir ayar.
 
 ---
 
@@ -398,14 +383,6 @@ Normalde Next.js’te:
 * `export const revalidate = 3600` → sayfanın tamamı 1 saatte bir yenilenir.
 * `fetch(..., { next: { revalidate: 10 } })` → sadece bu fetch isteği 10 saniyede bir yenilenir.
 
----
-
-İstersen ben sana **revalidate farkını gösterecek küçük bir demo** hazırlayabilirim (mesela ekrana tarih-saat basarak). İstiyor musun?
-
-
-Güzel soru 👍 Şimdi bunu adım adım açıklayayım:
-
-Senin kodunda iki farklı **revalidate** mantığı var:
 
 ---
 
@@ -445,12 +422,7 @@ Bu sayede Next.js sana iki farklı senaryo sunuyor:
 * Route bazlı yenileme (`revalidatePath`)
 * Veri bazlı yenileme (`revalidateTag`)
 
----
 
-İstersen ben sana bunun için küçük bir **senaryo örneği** yazayım: mesela blog yazısı eklediğinde `revalidatePath("/blog")` mi kullanırsın yoksa `revalidateTag("posts")` mi? İstiyor musun?
-
-
-Güzel bir soru 👌 Bu ikisi **Next.js 13+ (App Router)** dünyasında **veri fetch etme ve caching davranışını** kontrol etmek için kullanılıyor. Hadi parça parça açıklayayım:
 
 ---
 
@@ -516,10 +488,7 @@ Böylece bu veri **deploy sırasında alınır** ve her kullanıcıya aynı şek
 
 ---
 
-İstersen sana `force-dynamic`, `force-cache`, `no-store`, `revalidate` gibi tüm opsiyonları içeren bir **örnek proje yapısı** da gösterebilirim. İstiyor musun?
 
-
-Çok güzel yere değindin 👌
 Next.js **App Router**’da `fetch` için kullanılan en önemli opsiyonlardan biri de **`cache: "no-store"`**.
 
 ---
@@ -580,4 +549,4 @@ export default async function Page() {
 
 ---
 
-İstersen ben sana `force-cache`, `no-store`, `revalidate`’i karşılaştıran **küçük bir Next.js kod demosu** yazayım mı?
+
