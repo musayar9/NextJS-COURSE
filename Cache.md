@@ -216,3 +216,138 @@ console.log(results);
 
 * `Promise.all` = **tüm promise’leri paralel çalıştır + hepsi bitince sonucu al**
 * Resolve olursa → `.then` / reject olursa → `.catch`
+
+
+
+Çok iyi yakaladın 👏
+Buradaki `cache(async (postId: string) => { ... })` ifadesi, Next.js’in **sunucu tarafı veri önbellekleme (server function caching)** özelliğini kullanıyor.
+Bu, `fetch` içindeki `cache: "force-cache"` ile benzer bir amaç taşır ama **daha üst seviye** bir mekanizmadır.
+Şimdi bunu adım adım sade bir şekilde açıklayayım 👇
+
+---
+
+## 🧩 1. `cache()` nedir?
+
+`cache()` fonksiyonu Next.js (ve React 18+) tarafından sunulan bir yardımcı fonksiyondur:
+
+```ts
+import { cache } from "react";
+```
+
+Bu fonksiyon, içine yazdığın **asenkron bir fonksiyonu** önbelleğe alır.
+Yani:
+
+* Aynı argümanla çağırıldığında,
+* Aynı sonucu döndürür (yeniden çalıştırmadan),
+* Performansı artırır,
+* Gereksiz veritabanı sorgularını önler.
+
+---
+
+## ⚙️ 2. Basit örnekle açıklayalım
+
+Diyelim ki şöyle bir fonksiyonun var:
+
+```ts
+async function getUser(id) {
+  console.log("DB'den veri alınıyor...");
+  const user = await db.users.findById(id);
+  return user;
+}
+```
+
+Bunu 5 kez aynı `id` ile çağırırsan, her seferinde veritabanına gider.
+Ama şöyle yaparsan:
+
+```ts
+import { cache } from "react";
+
+const getUser = cache(async (id) => {
+  console.log("DB'den veri alınıyor...");
+  const user = await db.users.findById(id);
+  return user;
+});
+```
+
+Artık:
+
+```ts
+await getUser("123");
+await getUser("123");
+await getUser("123");
+```
+
+➡️ İlkinde veritabanına gider,
+➡️ Sonrakilerde **cache’ten getirir (hafızadan)**.
+Veritabanına tekrar gitmez. 🚀
+
+---
+
+## 🧠 3. Neden `getPostById` fonksiyonunda kullanılmış?
+
+Senin kodun:
+
+```ts
+export const getPostById = cache(async (postId: string) => { ... });
+```
+
+Bu durumda:
+
+* Aynı `postId` değeriyle `getPostById` çağrıldığında,
+* Fonksiyon **tekrar veritabanı sorgusu yapmaz**,
+* Daha önce dönen sonucu **cache’ten döndürür**.
+
+### 🔹 Faydaları:
+
+✅ Performans artışı (veritabanı yükü azalır)
+✅ Aynı sayfa render’ında tekrar tekrar veri çekmeyi önler
+✅ Statik sayfalarda gereksiz `await` çağrılarını engeller
+
+---
+
+## ⚡ 4. `cache()` nasıl çalışıyor?
+
+`cache()` fonksiyonu, fonksiyonun **parametrelerine göre bir hash (anahtar)** oluşturur.
+Bu hash aynıysa, aynı sonucu döndürür.
+Yani şuna benzer şekilde çalışır:
+
+| Çağrı                | Cache durumu | DB’ye gider mi? |
+| -------------------- | ------------ | --------------- |
+| `getPostById("abc")` | ❌ yok        | ✅ gider         |
+| `getPostById("abc")` | ✅ var        | ❌ gitmez        |
+| `getPostById("xyz")` | ❌ yok        | ✅ gider         |
+
+---
+
+## 🔒 5. Cache süresi nedir?
+
+`cache()`’in cache süresi **otomatik olarak React server cache yaşam döngüsüne bağlıdır**.
+Yani:
+
+* Aynı request/render içinde aynı parametreyle çağrıldığında cache geçerlidir.
+* Yeni bir kullanıcı isteğinde (örneğin sayfayı yenilediğinde) cache genelde **yeniden oluşturulur**.
+* Ancak Next.js bunu **SSG veya ISR** senaryolarında da optimize edebilir.
+
+---
+
+## ⚠️ 6. Dikkat edilmesi gerekenler
+
+| Durum                                              | Açıklama                                                  |
+| -------------------------------------------------- | --------------------------------------------------------- |
+| 🔁 Dinamik veri (ör. yorum sayısı sık değişiyorsa) | `cache()` kullanmak güncel olmayan veri gösterebilir.     |
+| 🧊 Statik veri (ör. yazar adı, başlık)             | `cache()` çok faydalı olur.                               |
+| 🧩 SSR sayfalarda                                  | `cache()` isteğe özel değişmeyen verilerde çok etkilidir. |
+
+---
+
+## 🧠 Özet
+
+| Özellik              | Açıklama                                                      |
+| -------------------- | ------------------------------------------------------------- |
+| 📦 `cache()`         | Fonksiyon sonuçlarını parametreye göre cache eder             |
+| 💡 Kullanım amacı    | Aynı veriyi tekrar tekrar DB’den çekmemek                     |
+| ⚙️ Nerede kullanılır | Sunucu bileşenlerinde (`app/` dizininde)                      |
+| ⚠️ Ne zaman kullanma | Veriler sık değişiyorsa (ör. anlık like sayısı, mesajlar vs.) |
+
+---
+

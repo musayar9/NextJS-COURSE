@@ -1,18 +1,17 @@
-import { fetchPosts, getPostCount } from "@/db/data";
-import Link from "next/link";
-import React from "react";
+import { fetchPosts } from '@/db/data'
+import Link from 'next/link';
+import React from 'react'
 
-const BlogPage = async () => {
-  // const posts = await fetchPosts();
-  // const count = await getPostCount();
-  const [posts, count] = await Promise.all([fetchPosts(), getPostCount()]);
-  console.log("posts", posts);
+const MoreOther = async() => {
+    const morePosts = await fetchPosts();
+    
+
   return (
     <div className="mt-4 mb-4 text-white">
-      <h1 className="text-3xl font-bold">The Blog</h1>
-      <p className="mb-4">Total Posts: {count}</p>
+    
+
       <ul className="space-y-4">
-        {posts.map((post) => (
+        {morePosts.map((post) => (
           <li
             key={post.id}
             className="p-4 border border-slate-100 shadow shadow-amber-50 rounded-md bg-gray-900"
@@ -42,6 +41,6 @@ const BlogPage = async () => {
       </ul>
     </div>
   );
-};
+}
 
-export default BlogPage;
+export default MoreOther

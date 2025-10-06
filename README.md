@@ -1,6 +1,5 @@
 ### Intercept Routes
 
-
 **Intercepting Routes**
 
 📌 **Tanım**
@@ -64,7 +63,6 @@ Burada `@modal` bir **parallel route** slotu. Intercept route sayesinde Next.js,
 - Kod tekrarını azaltır: aynı sayfayı hem normal hem modal olarak kullanabilirsin.
 
 ---
-
 
 ---
 
@@ -172,14 +170,12 @@ export default function PostModal({ params }: { params: { id: string } }) {
 - Ama Next.js intercepting sayesinde bu isteği yakalayıp `@modal/post/[id]` altında render ediyor → modal açılıyor.
 - Eğer kullanıcı direkt URL’den `/post/1` yazarsa → `app/post/[id]/page.tsx` açılır (tam sayfa).
 
-
-
 ---
 
 ## 🔹 Slot Nedir?
 
-* Next.js’te bir `slot`, belirli bir route yapısında aynı anda birden fazla “alanı” doldurmanı sağlar.
-* Yani tek bir layout içinde **farklı içerik bölgeleri** (slotlar) tanımlayabilirsin.
+- Next.js’te bir `slot`, belirli bir route yapısında aynı anda birden fazla “alanı” doldurmanı sağlar.
+- Yani tek bir layout içinde **farklı içerik bölgeleri** (slotlar) tanımlayabilirsin.
 
 Bunu `@` prefix’i ile yapıyorsun:
 
@@ -198,27 +194,27 @@ Layout’ta hangi slot nereye yerleşecekse, onu sen tanımlıyorsun.
 
 1. **Farklı UI bölgelerini paralel olarak yönetmek için**
 
-   * Örneğin bir dashboard düşün. Sol tarafta menü, ortada içerik, sağda bildirim paneli olsun.
-   * Her bölgeyi ayrı bir `slot` ile yönetmek işleri çok daha temiz yapar.
+   - Örneğin bir dashboard düşün. Sol tarafta menü, ortada içerik, sağda bildirim paneli olsun.
+   - Her bölgeyi ayrı bir `slot` ile yönetmek işleri çok daha temiz yapar.
 
 2. **Independent navigation (bağımsız gezinme)**
 
-   * Kullanıcı `analytics` panelinde gezinirken `settings` slotu aynı kalabilir.
-   * Yani her slot bağımsız olarak kendi route’unu yönetebilir.
+   - Kullanıcı `analytics` panelinde gezinirken `settings` slotu aynı kalabilir.
+   - Yani her slot bağımsız olarak kendi route’unu yönetebilir.
 
 3. **UI consistency (tutarlılık)**
 
-   * Tüm sayfayı yeniden render etmek yerine, sadece slot içeriği değişir.
-   * Bu, performans ve kullanıcı deneyimi için büyük avantajdır.
+   - Tüm sayfayı yeniden render etmek yerine, sadece slot içeriği değişir.
+   - Bu, performans ve kullanıcı deneyimi için büyük avantajdır.
 
 ---
 
 ## 🔹 Hangi Durumlarda Kullanılır?
 
-* **Dashboard** yapılarında → farklı panellerin aynı anda render edilmesi gerekiyorsa.
-* **Split view** (bölünmüş ekran) uygulamalarında.
-* **Messenger tarzı uygulamalarda** → solda sohbet listesi, ortada seçili sohbet, sağda profil bilgisi.
-* **Modal / Drawer gibi interception routes ile birlikte** → aynı layout’un üzerine ek içerik bindirmek istediğinde.
+- **Dashboard** yapılarında → farklı panellerin aynı anda render edilmesi gerekiyorsa.
+- **Split view** (bölünmüş ekran) uygulamalarında.
+- **Messenger tarzı uygulamalarda** → solda sohbet listesi, ortada seçili sohbet, sağda profil bilgisi.
+- **Modal / Drawer gibi interception routes ile birlikte** → aynı layout’un üzerine ek içerik bindirmek istediğinde.
 
 ---
 
@@ -240,17 +236,17 @@ export default function DashboardLayout({
   analytics,
   settings,
 }: {
-  children: React.ReactNode
-  analytics: React.ReactNode
-  settings: React.ReactNode
+  children: React.ReactNode;
+  analytics: React.ReactNode;
+  settings: React.ReactNode;
 }) {
   return (
     <div className="grid grid-cols-3 gap-4">
-      <div>{analytics}</div>   {/* Sol panel */}
-      <div>{children}</div>    {/* Orta panel */}
-      <div>{settings}</div>    {/* Sağ panel */}
+      <div>{analytics}</div> {/* Sol panel */}
+      <div>{children}</div> {/* Orta panel */}
+      <div>{settings}</div> {/* Sağ panel */}
     </div>
-  )
+  );
 }
 ```
 
@@ -258,7 +254,7 @@ export default function DashboardLayout({
 
 ```tsx
 export default function AnalyticsPage() {
-  return <div>Analytics Panel</div>
+  return <div>Analytics Panel</div>;
 }
 ```
 
@@ -266,7 +262,7 @@ export default function AnalyticsPage() {
 
 ```tsx
 export default function SettingsPage() {
-  return <div>Settings Panel</div>
+  return <div>Settings Panel</div>;
 }
 ```
 
@@ -276,10 +272,8 @@ export default function SettingsPage() {
 
 ✅ Özet:
 
-* **Slotlar**, Next.js’te paralel UI bölgeleri oluşturmak için kullanılır.
-* En çok **dashboard, messaging app, modal/drawer gibi multi-view** senaryolarda tercih edilir.
-
-
+- **Slotlar**, Next.js’te paralel UI bölgeleri oluşturmak için kullanılır.
+- En çok **dashboard, messaging app, modal/drawer gibi multi-view** senaryolarda tercih edilir.
 
 Buradaki olay aslında tamamen **Next.js konfigürasyon dosyası** (`next.config.ts` ya da `.js`) ile ilgili. Adım adım açıklayayım 👇
 
@@ -287,46 +281,45 @@ Buradaki olay aslında tamamen **Next.js konfigürasyon dosyası** (`next.config
 
 ### 1. `import type { NextConfig } from "next";`
 
-* Burada **TypeScript tipi** import ediyorsun.
-* `NextConfig` → Next.js’in kabul ettiği config nesnesinin tip tanımıdır.
-* Yani senin `nextConfig` objen yazım hatalarına karşı tip desteği alıyor.
+- Burada **TypeScript tipi** import ediyorsun.
+- `NextConfig` → Next.js’in kabul ettiği config nesnesinin tip tanımıdır.
+- Yani senin `nextConfig` objen yazım hatalarına karşı tip desteği alıyor.
   Mesela yanlış bir property yazarsan (örneğin `devIndicator` yerine `devIndicators`) TypeScript uyarır.
 
 ---
 
 ### 2. `const nextConfig: NextConfig = { ... }`
 
-* Burada bir **konfigürasyon objesi** tanımlıyorsun.
-* Bu obje, Next.js’in build, dev server, logging gibi özelliklerini özelleştirmene yarıyor.
+- Burada bir **konfigürasyon objesi** tanımlıyorsun.
+- Bu obje, Next.js’in build, dev server, logging gibi özelliklerini özelleştirmene yarıyor.
 
 Senin örneğinde:
 
 ```ts
 const nextConfig: NextConfig = {
-  devIndicators: { position: "top-right" },  // HMR (Hot Reload) göstergesinin konumu
-  logging: { fetches: { fullUrl: true } },   // Fetch loglarında tam URL görünsün
+  devIndicators: { position: "top-right" }, // HMR (Hot Reload) göstergesinin konumu
+  logging: { fetches: { fullUrl: true } }, // Fetch loglarında tam URL görünsün
 };
 ```
 
-* `devIndicators.position` → Next.js development modda sağ üst köşede küçük bir **yeniden yükleniyor** ikonu çıkarır. Bunun yerini ayarlıyorsun.
-* `logging.fetches.fullUrl` → `fetch` istekleri console’a loglanırken **tam URL** yazılsın diye ayarlanıyor.
+- `devIndicators.position` → Next.js development modda sağ üst köşede küçük bir **yeniden yükleniyor** ikonu çıkarır. Bunun yerini ayarlıyorsun.
+- `logging.fetches.fullUrl` → `fetch` istekleri console’a loglanırken **tam URL** yazılsın diye ayarlanıyor.
 
 ---
 
 ### 3. `export default nextConfig;`
 
-* Burada config objesini dışa aktarıyorsun.
-* Next.js build ederken ya da dev server başlatırken otomatik olarak `next.config.js/ts` dosyasını okur ve bu objeyi kullanır.
+- Burada config objesini dışa aktarıyorsun.
+- Next.js build ederken ya da dev server başlatırken otomatik olarak `next.config.js/ts` dosyasını okur ve bu objeyi kullanır.
 
 ---
 
 ✅ Yani kısaca:
 
-* Bu dosya **Next.js için global ayarları** içeriyor.
-* TypeScript ile `NextConfig` tipini vererek güvence alıyorsun.
-* `devIndicators` → geliştirici deneyimi için görsel gösterge.
-* `logging` → fetch gibi işlemlerin log formatı.
-
+- Bu dosya **Next.js için global ayarları** içeriyor.
+- TypeScript ile `NextConfig` tipini vererek güvence alıyorsun.
+- `devIndicators` → geliştirici deneyimi için görsel gösterge.
+- `logging` → fetch gibi işlemlerin log formatı.
 
 ---
 
@@ -334,8 +327,8 @@ const nextConfig: NextConfig = {
 
 Normalde Next.js’te:
 
-* `fetch` yaptığında → veri **statik** veya **dinamik** olarak alınır.
-* ISR (Incremental Static Regeneration) sayesinde, sayfa ya da fetch sonucu **önbelleğe (cache)** alınır ve belirli bir süre sonra **yeniden üretilir**.
+- `fetch` yaptığında → veri **statik** veya **dinamik** olarak alınır.
+- ISR (Incremental Static Regeneration) sayesinde, sayfa ya da fetch sonucu **önbelleğe (cache)** alınır ve belirli bir süre sonra **yeniden üretilir**.
 
 `revalidate` bu "kaç saniyede bir yenilensin?" sorusuna cevap veriyor.
 
@@ -349,21 +342,21 @@ Normalde Next.js’te:
    export const revalidate = 3600;
    ```
 
-   * Bu, sayfa için **global cache süresi** tanımlar.
-   * Yani bu sayfa 3600 saniyede (1 saat) bir tekrar **re-generate** edilir.
-   * Kullanıcı ilk geldiğinde cache varsa onu görür, 1 saat sonra biri geldiğinde ise arka planda yeni versiyon oluşturulur.
+   - Bu, sayfa için **global cache süresi** tanımlar.
+   - Yani bu sayfa 3600 saniyede (1 saat) bir tekrar **re-generate** edilir.
+   - Kullanıcı ilk geldiğinde cache varsa onu görür, 1 saat sonra biri geldiğinde ise arka planda yeni versiyon oluşturulur.
 
 ---
 
 2. **Fetch düzeyinde (`{ next: { revalidate: 10 } }`)**
 
    ```ts
-   await fetch("...", { next: { revalidate: 10 } })
+   await fetch("...", { next: { revalidate: 10 } });
    ```
 
-   * Bu fetch isteği özel olarak **10 saniyede bir yenilensin** demek.
-   * Yani API’den gelen veri 10 saniye boyunca cache’de tutulur.
-   * 10 saniye geçince yeni gelen istek API’den tekrar veri çeker ve cache’i günceller.
+   - Bu fetch isteği özel olarak **10 saniyede bir yenilensin** demek.
+   - Yani API’den gelen veri 10 saniye boyunca cache’de tutulur.
+   - 10 saniye geçince yeni gelen istek API’den tekrar veri çeker ve cache’i günceller.
 
 ---
 
@@ -371,58 +364,56 @@ Normalde Next.js’te:
 
 Örneğin:
 
-* Sen sayfayı açtın, API’den `"todo/1"` verisi geldi → cache’lendi.
-* 10 saniye boyunca tüm ziyaretçiler aynı veriyi cache’den görür.
-* 11. saniyede biri sayfaya girerse → Next.js API’den tekrar veri çeker ve yeni sonucu cache’e yazar.
-* Ama aynı anda kullanıcıya eski cache gösterilir → yani **arka planda güncelleme** (ISR) olur.
+- Sen sayfayı açtın, API’den `"todo/1"` verisi geldi → cache’lendi.
+- 10 saniye boyunca tüm ziyaretçiler aynı veriyi cache’den görür.
+- 11. saniyede biri sayfaya girerse → Next.js API’den tekrar veri çeker ve yeni sonucu cache’e yazar.
+- Ama aynı anda kullanıcıya eski cache gösterilir → yani **arka planda güncelleme** (ISR) olur.
 
 ---
 
 ✅ Özet:
 
-* `export const revalidate = 3600` → sayfanın tamamı 1 saatte bir yenilenir.
-* `fetch(..., { next: { revalidate: 10 } })` → sadece bu fetch isteği 10 saniyede bir yenilenir.
-
+- `export const revalidate = 3600` → sayfanın tamamı 1 saatte bir yenilenir.
+- `fetch(..., { next: { revalidate: 10 } })` → sadece bu fetch isteği 10 saniyede bir yenilenir.
 
 ---
 
 ### 🔹 `revalidatePath("/")`
 
-* Bu fonksiyon **belirli bir route’u (sayfayı)** yeniden doğruluyor.
-* Yani sen butona bastığında Next.js `/` route’unun cache’ini temizliyor ve sonraki request geldiğinde veriyi **tekrar fetch ediyor**.
-* Kullanım senaryosu: Sayfa bazlı revalidation yapmak istediğinde. Örneğin `/profile` sayfasındaki kullanıcı bilgilerini güncellediğinde sadece `/profile` route’unu yeniden fetch ettirmek.
+- Bu fonksiyon **belirli bir route’u (sayfayı)** yeniden doğruluyor.
+- Yani sen butona bastığında Next.js `/` route’unun cache’ini temizliyor ve sonraki request geldiğinde veriyi **tekrar fetch ediyor**.
+- Kullanım senaryosu: Sayfa bazlı revalidation yapmak istediğinde. Örneğin `/profile` sayfasındaki kullanıcı bilgilerini güncellediğinde sadece `/profile` route’unu yeniden fetch ettirmek.
 
 ---
 
 ### 🔹 `revalidateTag("word")`
 
-* Bu fonksiyon ise **tag bazlı cache invalidation** yapıyor.
-* Fetch isteğinde sen şunu demişsin:
+- Bu fonksiyon ise **tag bazlı cache invalidation** yapıyor.
+- Fetch isteğinde sen şunu demişsin:
 
   ```ts
   fetch("https://icanhazdadjoke.com", {
     next: { tags: ["word"] },
-  })
+  });
   ```
 
   Burada `word` diye bir etiket verdin.
-* `revalidateTag("word")` çağrıldığında, bu etikete bağlı olan **tüm fetch’ler** yeniden doğrulanıyor.
-* Yani aynı etiketi farklı yerlerde kullanıyorsan (mesela `word` tag’i hem `/`, hem `/about` sayfasında geçiyorsa), hepsinin cache’i temizlenip tekrar güncelleniyor.
-* Kullanım senaryosu: Birden fazla sayfada kullanılan aynı veriyi güncellemek istediğinde. (örn: "kategoriler" veya "ayarlar" verisi hem Navbar’da hem de bir formda varsa).
+
+- `revalidateTag("word")` çağrıldığında, bu etikete bağlı olan **tüm fetch’ler** yeniden doğrulanıyor.
+- Yani aynı etiketi farklı yerlerde kullanıyorsan (mesela `word` tag’i hem `/`, hem `/about` sayfasında geçiyorsa), hepsinin cache’i temizlenip tekrar güncelleniyor.
+- Kullanım senaryosu: Birden fazla sayfada kullanılan aynı veriyi güncellemek istediğinde. (örn: "kategoriler" veya "ayarlar" verisi hem Navbar’da hem de bir formda varsa).
 
 ---
 
 ✅ **Özetle farkları:**
 
-* `revalidatePath("/")`: **Belirli bir route** için cache temizleme.
-* `revalidateTag("word")`: **Belirli bir veri grubunu (tag)** için cache temizleme.
+- `revalidatePath("/")`: **Belirli bir route** için cache temizleme.
+- `revalidateTag("word")`: **Belirli bir veri grubunu (tag)** için cache temizleme.
 
 Bu sayede Next.js sana iki farklı senaryo sunuyor:
 
-* Route bazlı yenileme (`revalidatePath`)
-* Veri bazlı yenileme (`revalidateTag`)
-
-
+- Route bazlı yenileme (`revalidatePath`)
+- Veri bazlı yenileme (`revalidateTag`)
 
 ---
 
@@ -430,12 +421,12 @@ Bu sayede Next.js sana iki farklı senaryo sunuyor:
 
 Bu dosyanın (ör. `page.js`, `route.js`, `layout.js`) **render davranışını** belirler.
 
-* Normalde Next.js, sayfaları **Static Generation (SSG)** veya **Server-Side Rendering (SSR)** arasında otomatik seçer.
-* `dynamic = "force-dynamic"` dediğinde:
+- Normalde Next.js, sayfaları **Static Generation (SSG)** veya **Server-Side Rendering (SSR)** arasında otomatik seçer.
+- `dynamic = "namic"` dediğinde:
 
-  * Bu route **her istekte yeniden çalıştırılır** (SSR).
-  * Hiçbir şekilde önbelleğe alınmaz.
-  * Örnek kullanım: çok sık değişen veya kullanıcıya özel (auth, dashboard vs.) sayfalarda.
+  - Bu route **her istekte yeniden çalıştırılır** (SSR).
+  - Hiçbir şekilde önbelleğe alınmaz.
+  - Örnek kullanım: çok sık değişen veya kullanıcıya özel (auth, dashboard vs.) sayfalarda.
 
 ```js
 // page.js
@@ -456,13 +447,13 @@ Bu durumda sayfa **her request’te yeni fetch yapar**.
 Bu ise **fetch API’sinde** kullanılan bir opsiyon.
 Next.js, kendi fetch wrapper’ını sağlıyor ve default olarak `GET` isteklerini **cache ediyor** (Static Rendering).
 
-* `cache: "force-cache"` dersen → **veri build sırasında alınır ve cache’ten servis edilir.**
-* Yani veri sabitlenmiş olur (SSG).
-* Örnek: hiç değişmeyecek ürün listesi, blog yazısı vs.
+- `cache: "force-cache"` dersen → **veri build sırasında alınır ve cache’ten servis edilir.**
+- Yani veri sabitlenmiş olur (SSG).
+- Örnek: hiç değişmeyecek ürün listesi, blog yazısı vs.
 
 ```js
 const data = await fetch("https://api.example.com/products", {
-  cache: "force-cache"
+  cache: "force-cache",
 });
 ```
 
@@ -483,11 +474,10 @@ Böylece bu veri **deploy sırasında alınır** ve her kullanıcıya aynı şek
 
 ✅ Kısacası:
 
-* **`dynamic = "force-dynamic"` → route bazında “hep SSR çalıştır”**
-* **`cache: "force-cache"` → fetch bazında “hep SSG cache kullan”**
+- **`dynamic = "force-dynamic"` → route bazında “hep SSR çalıştır”**
+- **`cache: "force-cache"` → fetch bazında “hep SSG cache kullan”**
 
 ---
-
 
 Next.js **App Router**’da `fetch` için kullanılan en önemli opsiyonlardan biri de **`cache: "no-store"`**.
 
@@ -495,10 +485,10 @@ Next.js **App Router**’da `fetch` için kullanılan en önemli opsiyonlardan b
 
 ## `cache: "no-store"` nedir?
 
-* `fetch()` çağrısında kullanılır.
-* **Hiçbir şekilde cache yapılmaz.**
-* Veri her istekte **yeniden alınır** → tam SSR davranışı.
-* `dynamic = "force-dynamic"` ile benzer ama farkı **fetch seviyesinde** olmasıdır.
+- `fetch()` çağrısında kullanılır.
+- **Hiçbir şekilde cache yapılmaz.**
+- Veri her istekte **yeniden alınır** → tam SSR davranışı.
+- `dynamic = "force-dynamic"` ile benzer ama farkı **fetch seviyesinde** olmasıdır.
 
 ---
 
@@ -508,8 +498,8 @@ Next.js **App Router**’da `fetch` için kullanılan en önemli opsiyonlardan b
 // page.js
 export default async function Page() {
   const data = await fetch("https://api.example.com/users", {
-    cache: "no-store"
-  }).then(res => res.json());
+    cache: "no-store",
+  }).then((res) => res.json());
 
   return <pre>{JSON.stringify(data, null, 2)}</pre>;
 }
@@ -517,8 +507,8 @@ export default async function Page() {
 
 🔎 Bu durumda:
 
-* Her kullanıcı sayfayı açtığında **API’ye yeni istek atılır**.
-* Hiçbir önbellek yok → her zaman **en güncel veri**.
+- Her kullanıcı sayfayı açtığında **API’ye yeni istek atılır**.
+- Hiçbir önbellek yok → her zaman **en güncel veri**.
 
 ---
 
@@ -535,18 +525,16 @@ export default async function Page() {
 
 ## Ne zaman kullanmalı?
 
-* Kullanıcıya özel veri → ör. **profil bilgisi, dashboard**
-* Çok sık değişen API → **banka kuru, borsa fiyatları, canlı skor**
-* Cache kullanılamayacak hassas içerikler → **auth bilgisi**
+- Kullanıcıya özel veri → ör. **profil bilgisi, dashboard**
+- Çok sık değişen API → **banka kuru, borsa fiyatları, canlı skor**
+- Cache kullanılamayacak hassas içerikler → **auth bilgisi**
 
 ---
 
 👉 Kısaca:
 
-* `no-store` → **fetch özelinde her zaman taze veri**
-* `force-dynamic` → **sayfa özelinde SSR**
-* `force-cache` → **fetch özelinde cache zorla**
+- `no-store` → **fetch özelinde her zaman taze veri**
+- `force-dynamic` → **sayfa özelinde SSR**
+- `force-cache` → **fetch özelinde cache zorla**
 
 ---
-
-
