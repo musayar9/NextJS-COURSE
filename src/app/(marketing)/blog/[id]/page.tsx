@@ -16,14 +16,14 @@ import PostSkeleton from "./PostSkeleton";
 const SingleBlog = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   // const post = await getPostById(id);
-  // await new Promise((resolve) => setTimeout(resolve, 5000));
+  //  await new Promise((resolve) => setTimeout(resolve, 5000));
   //simulate delay
   // const [post, morePosts, comments] = await Promise.all([
   //   getPostById(id),
   //   fetchPosts(2),
   //   getCommentsByPostId(id),
   // ]);
-
+  // const comments =  getCommentsByPostId(id);
   const post = await getPostById(id);
   console.log("postt", post.authorName);
   return (

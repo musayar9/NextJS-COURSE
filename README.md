@@ -2,13 +2,13 @@
 
 **Intercepting Routes**
 
-📌 **Tanım**
+ **Tanım**
 Intercepting Routes sayesinde başka bir route’a gitmek istediğinde, **o route’u normalde açılacağı yerde değil, mevcut route’un üzerinde bir modal / overlay gibi gösterebiliyorsun.**
 Yani aslında başka bir sayfayı "yakalıyorsun" (intercept) ve farklı bir şekilde render ediyorsun.
 
 ---
 
-### 🔎 Örnek Senaryo
+###  Örnek Senaryo
 
 Bir sosyal medya uygulaması düşünelim:
 
@@ -20,7 +20,7 @@ Bunu intercept routes ile yapıyorsun.
 
 ---
 
-### 📂 Dosya Yapısı Örneği
+###  Dosya Yapısı Örneği
 
 ```bash
 app

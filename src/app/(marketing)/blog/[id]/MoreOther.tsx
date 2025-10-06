@@ -1,15 +1,13 @@
-import { fetchPosts } from '@/db/data'
-import Link from 'next/link';
-import React from 'react'
+import { fetchPosts } from "@/db/data";
+import Link from "next/link";
+import React from "react";
 
-const MoreOther = async() => {
-    const morePosts = await fetchPosts();
-    
+const MoreOther = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+  const morePosts = await fetchPosts();
 
   return (
     <div className="mt-4 mb-4 text-white">
-    
-
       <ul className="space-y-4">
         {morePosts.map((post) => (
           <li
@@ -41,6 +39,6 @@ const MoreOther = async() => {
       </ul>
     </div>
   );
-}
+};
 
-export default MoreOther
+export default MoreOther;

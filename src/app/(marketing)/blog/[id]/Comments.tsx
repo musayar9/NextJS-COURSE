@@ -2,12 +2,10 @@ import { getCommentsByPostId } from "@/db/data";
 import React from "react";
 
 const Comments = async ({ id }: { id: string }) => {
-//   await new Promise((resolve) => setTimeout(resolve, 5000));
+  //   await new Promise((resolve) => setTimeout(resolve, 5000));
   const comments = await getCommentsByPostId(id);
   return (
     <div className="mt-6 border-t border-gray-100 pt-4">
-
-
       {comments.map((comment) => (
         <div
           key={comment.id}
