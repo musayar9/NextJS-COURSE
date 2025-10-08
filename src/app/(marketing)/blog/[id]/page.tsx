@@ -13,6 +13,10 @@ import MoreSkeleton from "./MoreSkeleton";
 import MoreOther from "./MoreOther";
 import PostSkeleton from "./PostSkeleton";
 
+
+
+export const experimental_ppr = true;
+
 const SingleBlog = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   // const post = await getPostById(id);
@@ -72,6 +76,11 @@ export default SingleBlog;
 // const ids = await getAllPostIds();
 // return ids;
 // }
+
+export async function generateStaticParams(){
+  const ids = await getAllPostIds();
+  return ids
+}
 
 // export const metadata: Metadata = {
 //   title: "Blog Detail Page",

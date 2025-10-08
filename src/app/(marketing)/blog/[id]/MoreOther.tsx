@@ -1,8 +1,10 @@
 import { fetchPosts } from "@/db/data";
 import Link from "next/link";
+import { connection } from "next/server";
 import React from "react";
 
 const MoreOther = async () => {
+  await connection();
   await new Promise((resolve) => setTimeout(resolve, 5000));
   const morePosts = await fetchPosts();
 
