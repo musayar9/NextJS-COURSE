@@ -3,7 +3,7 @@ import "server-only";
 import { db } from "./drizzle";
 import { comments, postLikes, posts, users } from "./schema";
 
-import { count, countDistinct, desc, eq } from "drizzle-orm";
+import { and, count, countDistinct, desc, eq } from "drizzle-orm";
 import { cache } from "react";
 const POSTS_PER_PAGE = 5; // POSTS PER PAGE
 
@@ -34,9 +34,8 @@ export const fetchPosts = async (page = 1) => {
         content: posts.content,
         createdAt: posts.createdAt,
         authorName: users.name,
-        image:users.image,
         likeCount: likesCount.likeCount,
-        commentsCount: commentsCount.commentCount,
+        commentCount: commentsCount.commentCount,
       })
       .from(posts)
       .innerJoin(users, eq(posts.author, users.id))
@@ -48,8 +47,8 @@ export const fetchPosts = async (page = 1) => {
 
     return result;
   } catch (error) {
-    console.error("fetchPosts error", error);
-    throw new Error("Failed to fetch posts");
+    console.error("fetchPosts Error:", error);
+    throw new Error("Failed to fetch posts.");
   }
 };
 
@@ -63,6 +62,16 @@ export async function getPostCount() {
 export async function getAllPostIds() {
   const result = await db.select({ id: posts.id }).from(posts);
   return result;
+}
+
+export async function isPostLikedByUser(postId: string, userId: string) {
+  const result = await db
+    .select({ id: postLikes.postId })
+    .from(postLikes)
+    .where(and(eq(postLikes.postId, postId), eq(postLikes.userId, userId)))
+    .limit(1);
+
+  return result.length > 0;
 }
 
 export const getPostById = cache(async (postId: string) => {
@@ -85,7 +94,7 @@ export const getPostById = cache(async (postId: string) => {
       .where(eq(posts.id, postId))
       .groupBy(posts.id, users.id);
 
-    return result[0] ?? null;
+    return result.length > 0 ? result[0] : null;
   } catch (error) {
     console.error("getPostById Error:", error);
     throw new Error("Failed to fetch post.");
@@ -108,5 +117,22 @@ export async function getCommentsByPostId(postId: string) {
   return result;
 }
 
+export async function getPostStats(postId: string) {
+  const [likeResult, commentResult] = await Promise.all([
+    db
+      .select({ likesCount: count() })
+      .from(postLikes)
+      .where(eq(postLikes.postId, postId))
+      .then((res) => res[0]),
+    db
+      .select({ commentsCount: count() })
+      .from(comments)
+      .where(eq(comments.postId, postId))
+      .then((res) => res[0]),
+  ]);
 
-
+  return {
+    likesCount: Number(likeResult?.likesCount ?? 0),
+    commentsCount: Number(commentResult?.commentsCount ?? 0),
+  };
+}

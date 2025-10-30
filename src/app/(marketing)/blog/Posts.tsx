@@ -1,12 +1,53 @@
-"use client"
-import { fetchPosts } from '@/db/data'
-import Link from 'next/link'
-import React, { useState } from 'react'
+"use client";
+import { fetchPosts } from "@/db/data";
+import Link from "next/link";
+import React, { useCallback, useEffect, useState } from "react";
 
-const Posts = ({initialPosts}:{initialPosts:Awaited<ReturnType<typeof fetchPosts>>}) => {
-const [posts, setPosts] =useState(initialPosts)
+const Posts = ({
+  initialPosts,
+  totalPosts,
+}: {
+  initialPosts: Awaited<ReturnType<typeof fetchPosts>>;
+  totalPosts: number;
+}) => {
+  const [posts, setPosts] = useState(initialPosts);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const totalPages = Math.ceil(totalPosts / 5);
+
+  // useEffect(() => {
+  //   // Example: Set likeCount to 2 if it's less than 2
+  //   const result = posts.map((item) =>
+  //     item.likeCount <= 1 ? { ...item, likeCount: item.likeCount + 2 } : item
+  //   );
+  //   // If you want to update the posts state, uncomment the next line:
+  //   // setPosts(result);
+  //   setPosts(result);
+  // }, []);
+
+  const loadMorePosts = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const newPosts = await fetch(`/api/posts?page=${currentPage + 1}`);
+      // console.log(newPosts)
+      const data = await newPosts.json();
+      // // setPosts(newPosts);
+      console.log("data", data);
+      // console.log("data", data);
+
+      setCurrentPage((prev) => prev + 1);
+
+      // setPosts([...posts, ...data]);
+      setPosts((prev) =>[...prev, ...data])
+    } catch (error) {
+      console.log("err", error);
+    }
+    setIsLoading(false);
+  }, [currentPage, posts]);
   return (
-       <ul className="space-y-4">
+    <div>
+      <ul className="space-y-4">
         {posts.map((post) => (
           <li
             key={post.id}
@@ -35,7 +76,18 @@ const [posts, setPosts] =useState(initialPosts)
           </li>
         ))}
       </ul>
-  )
-}
+      {currentPage < totalPages && (
+        <div className="mt-4 text-center">
+          <button disabled={isLoading}
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+            onClick={loadMorePosts}
+          >
+            {isLoading ? "Loading..." : "Load More"}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
 
-export default Posts
+export default Posts;

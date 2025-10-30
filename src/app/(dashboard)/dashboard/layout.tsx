@@ -1,7 +1,8 @@
 import Link from "next/link";
 import React from "react";
+import { requireLogin } from "../../../auth";
 
-const DashboardLayout = ({
+const DashboardLayout = async({
   children,
   analytics,
   users,
@@ -10,6 +11,8 @@ const DashboardLayout = ({
   analytics: React.ReactNode;
   users: React.ReactNode;
 }) => {
+const user = await requireLogin()
+
   return (
     <div className="bg-green-700 p-2">
       <h1 className="text-2xl font-bold text-white p-4">Dashboard Layout</h1>
@@ -18,6 +21,8 @@ const DashboardLayout = ({
         <Link href={"/dashboard"}>Home</Link>
         <Link href={"/dashboard/revenue"}>Revenue</Link>
       </div>
+      <p>{ user.name}</p>
+      {user?.imagge && <img src={user.image} alt=""/>}
       {children}
       {analytics}
       {users}

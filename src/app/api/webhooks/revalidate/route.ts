@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
   const data = await request.json();
-  console.log("data", data);
+  // console.log("data", data);
   if (!data.id) {
     return NextResponse.json({ message: "No ID Provided" }, { status: 400 });
   }

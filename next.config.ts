@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   devIndicators: { position: "top-right" }, // HMR (Hot Reload) göstergesinin konumu
   logging: { fetches: { fullUrl: true } }, // Fetch loglarında tam URL görünsün
 
-  experimental: { ppr: "incremental" },
+  experimental: { ppr: "incremental", authInterrupts:true },
 };
 
 export default nextConfig;

@@ -10,9 +10,10 @@ export async function GET(request: NextRequest) {
     const response = NextResponse.redirect(new URL("/blog", request.url));
     response.cookies.set("x-token", "123");
     const page = request.nextUrl.searchParams.get("page") || 2;
+    // console.log("page", page)
     const posts = await fetchPosts(page);
-    console.log(posts);
-    return NextResponse.json(posts, response, { status: 200 });
+    // console.log(posts);
+    return NextResponse.json(posts, { status: 200 });
   } catch (error) {
     console.log("error", error);
     return NextResponse.json(

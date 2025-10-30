@@ -19,7 +19,7 @@ const BlogPage = async ({
     <div className="mt-4 mb-4 text-white">
       <h1 className="text-3xl font-bold">The Blog</h1>
       <p className="mb-4">Total Posts: {count}</p>
-      <Posts  initialPosts={posts}/>
+      <Posts initialPosts={posts} totalPosts={count} />
     </div>
   );
 };
