@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { getPostStats } from "../../db/data";
+import { getCurrentUser } from "../../auth";
 
 const EditPostSchema = z.object({
   title: z.string().min(5, "Title must be at least 3 characters").max(200),
@@ -32,6 +33,11 @@ export const editPost = async (
 
   // return { message: "This is a test solving" };
   // await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  const user = await getCurrentUser();
+  if (!user || !["admin", "editor"].includes(user.role)) {
+    return { message: "Unauthorized" };
+  }
 
   // extracting the data from the form
   const title = formData.get("title");
@@ -86,9 +92,10 @@ Sonuç	Kullanıcı hemen güncel veriyi görür
 };
 
 export const togglePostLike = async (postId: string) => {
-  const userId = (await cookies()).get("user_id")?.value;
+  // const userId = (await cookies()).get("user_id")?.value;
+  const user = await getCurrentUser();
 
-  if (!userId) {
+  if (!user) {
     return { message: "Unauthorized" };
   }
 
@@ -96,18 +103,20 @@ export const togglePostLike = async (postId: string) => {
     const like = await db
       .select()
       .from(postLikes)
-      .where(and(eq(postLikes.postId, postId), eq(postLikes.userId, userId)))
+      .where(and(eq(postLikes.postId, postId), eq(postLikes.userId, user.id)))
       .limit(1);
 
     if (like[0]) {
       await db
         .delete(postLikes)
-        .where(and(eq(postLikes.postId, postId), eq(postLikes.userId, userId)));
+        .where(
+          and(eq(postLikes.postId, postId), eq(postLikes.userId, user.id))
+        );
       // revalidatePath(`/blog/${postId}`);
       const postStats = await getPostStats(postId);
       return { isLiked: false, likesCount: postStats.likesCount };
     } else {
-      await db.insert(postLikes).values({ postId, userId });
+      await db.insert(postLikes).values({ postId, userId: user.id });
       // revalidatePath(`/blog/${postId}`);
       const postStats = await getPostStats(postId);
       return { isLiked: true, likesCount: postStats.likesCount };

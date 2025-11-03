@@ -1,5 +1,6 @@
 import React from 'react'
 import { getCurrentUser } from '../auth'
+import { signOut } from '../app/functions/auth'
 
 const LoginStatus = async() => {
 const user = await getCurrentUser()

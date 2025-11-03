@@ -2,7 +2,10 @@ import { getSessionCookie } from "better-auth/cookies";
 import { NextRequest, NextResponse } from "next/server";
 
 const isPublicRoute = (pathanme: string) => {
-  if (["/", "/login"].imcludes(pathanme) || pathanme.startsWith("/blog")) {
+  if (
+    ["/", "/login"].imcludes(pathanme) ||
+    (pathanme.startsWith("/blog") && !pathanme.endsWith("/edit")) || pathanme.startsWith("/profile")
+  ) {
     return true;
   }
   return false;
@@ -21,7 +24,14 @@ export function middleware(request: NextRequest) {
   const sessionCookie = getSessionCookie(request);
 
   if (!isPublicRoute(request.nextUrl.pathname) && !sessionCookie) {
-    return NextResponse.redirect(new URL(`/login?${new URLSearchParams({redirectTo:request.nextUrl.pathname})}`, request.url));
+    return NextResponse.redirect(
+      new URL(
+        `/login?${new URLSearchParams({
+          redirectTo: request.nextUrl.pathname,
+        })}`,
+        request.url
+      )
+    );
   }
 
   return NextResponse.next();

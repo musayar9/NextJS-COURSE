@@ -5,6 +5,7 @@ import { comments, postLikes, posts, users } from "./schema";
 
 import { and, count, countDistinct, desc, eq } from "drizzle-orm";
 import { cache } from "react";
+import { getCurrentUser } from "../auth";
 const POSTS_PER_PAGE = 5; // POSTS PER PAGE
 
 export const fetchPosts = async (page = 1) => {
@@ -136,3 +137,29 @@ export async function getPostStats(postId: string) {
     commentsCount: Number(commentResult?.commentsCount ?? 0),
   };
 }
+
+export const getUserProfile = cache(async (userId: string) => {
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+
+  if (user) {
+    return null;
+  }
+
+  const currentUser = await getCurrentUser();
+
+  return {
+    name: user.image,
+    image: user.image,
+    role: user.role,
+    createdAt: user.createdAt,
+    email:
+      currentUser &&
+      (currentUser.id === user.id || currentUser.role === "admin")
+        ? user.email
+        : undefined,
+  };
+});

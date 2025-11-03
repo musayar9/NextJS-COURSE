@@ -52,18 +52,7 @@ const SingleBlog = async ({ params }: { params: Promise<{ id: string }> }) => {
             By {post.authorName} on{" "}
             {new Date(post.createdAt).toLocaleDateString()}
           </p>
-          <Link
-            href={`/blog/${id}/edit`}
-            className="
-  mt-4
-  px-4 py-2
-  bg-blue-500 text-white rounded-md
-duration-150 ease-in-out
-  hover:bg-blue-600 hover:scale-150
-"
-          >
-            Edit Post
-          </Link>
+         
         </li>
       </ul>
 

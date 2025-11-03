@@ -22,6 +22,15 @@ export const auth = betterAuth({
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
   },
+
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: true,
+      },
+    },
+  },
   plugins: [nextCookies()],
   advanced: {
     database: { generateId: false },
@@ -29,7 +38,7 @@ export const auth = betterAuth({
 });
 
 export const requireLogin = cache(async (redirectTo = "/dashboard") => {
-  const user = await getCurrentUser()
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect(`/login?${new URLSearchParams({ redirectTo })}`);
@@ -38,14 +47,12 @@ export const requireLogin = cache(async (redirectTo = "/dashboard") => {
   return user;
 });
 
-
-export const getCurrentUser = cache(async()=>{
-
+export const getCurrentUser = cache(async () => {
   const session = await auth.api.getSession({ headers: await headers() });
 
   if (!session) {
-    return null
+    return null;
   }
 
   return session.user;
-})
+});
